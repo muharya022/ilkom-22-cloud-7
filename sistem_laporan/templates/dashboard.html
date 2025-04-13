@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-icons/font/bootstrap-icons.css' %}">
+
+    <style>
+        /* Agar footer tetap di bawah */
+        html, body {
+            height: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .content {
+            flex: 1;
+        }
+
+        .bg-image {
+            background: url("{% static 'images/ins.jpg' %}") no-repeat center center;
+            background-size: cover;
+            height: 100vh; /* Satu layar penuh */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.5); /* Efek transparan gelap */
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+    <script>
+        function confirmLogout(event) {
+            event.preventDefault();  // Mencegah aksi link default
+            const isConfirmed = window.confirm("Apakah Anda yakin ingin logout?");
+            if (isConfirmed) {
+                window.location.href = event.target.href;  // Arahkan ke URL logout jika dikonfirmasi
+            }
+        }
+    </script>
+</head>
+<body>
