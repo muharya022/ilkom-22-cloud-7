@@ -37,17 +37,6 @@
                 <label class="form-check-label">Beri Hak Admin</label>
             </div>
             <button type="submit" class="btn btn-success mt-3">Update Akun</button>
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert 
-                        {% if message.tags == 'error' %}alert-danger
-                        {% elif message.tags == 'success' %}alert-success
-                        {% else %}alert-info{% endif %} " role="alert">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-                {% for message in messages %}{% endfor %}
-            {% endif %}
         </form>
     </div>
 
