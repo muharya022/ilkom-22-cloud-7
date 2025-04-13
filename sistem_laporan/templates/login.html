@@ -24,4 +24,42 @@
             margin-bottom: 20px;
         }
     </style>
+    <body>
+
+        <div class="login-container">
+            <div class="d-flex justify-content-center mb-3">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" height="95">
+            </div>
+            <h3>Login</h3>
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert 
+                            {% if message.tags == 'error' %}alert-danger
+                            {% elif message.tags == 'success' %}alert-success
+                            {% else %}alert-info{% endif %} " role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% for message in messages %}{% endfor %}
+                {% endif %}
+    
+            </form>
+            <p class="text-center mt-3">Belum punya akun? <a href="{% url 'register' %}">Daftar</a></p>
+        </div>
+    
+        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    </body>
+    </html>
 </head>
