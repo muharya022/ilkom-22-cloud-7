@@ -1,0 +1,21 @@
+# Virtual environment
+env/
+venv/
+
+# File Python bytecode
+*.pyc
+__pycache__/
+
+# File database SQLite
+db.sqlite3
+
+# File log
+*.log
+
+# Direktori yang digunakan oleh editor
+.vscode/
+.idea/
+
+# File lainnya yang ingin diabaikan
+*.pot
+*.mo
