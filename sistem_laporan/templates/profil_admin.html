@@ -7,34 +7,11 @@
     <title>Profil Pengguna</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'bootstrap-icons/font/bootstrap-icons.css' %}">
-    <script>
-        function confirmLogout(event) {
-            event.preventDefault();  // Mencegah aksi link default
-            const isConfirmed = window.confirm("Apakah Anda yakin ingin logout?");
-            if (isConfirmed) {
-                window.location.href = "{% url 'logout' %}";
-            }
-        }
-    </script>
+
 </head>
 <body>
         
-    <div class="container mt-5">
-        <h2 class="mb-4">Profil Admin</h2>
 
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title mb-4">Informasi Admin</h5>
-                <p><strong>Nama Lengkap:</strong> {{ user.get_full_name }}</p>
-                <p><strong>Email:</strong> {{ user.email }}</p>
-                <p><strong>Username:</strong> {{ user.username }}</p>
-                <!-- Jika ada data lain yang ingin ditampilkan, misalnya tanggal bergabung -->
-                <p><strong>Tanggal Bergabung:</strong> {{ user.date_joined }}</p>
-            </div>
-        </div>
-
-        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary mt-3">Kembali</a>
-    </div>
 
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
