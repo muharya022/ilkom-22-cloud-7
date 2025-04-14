@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import requests
 
-load_dotenv()  # Baca isi file .env
+load_dotenv()
 
 BREVO_API_KEY = os.getenv("BREVO_API_KEY")
 
