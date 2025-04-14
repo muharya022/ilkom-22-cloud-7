@@ -1,19 +1,17 @@
-# dokumen/utils/email_api.py
 import requests
-
-BREVO_API_KEY = "BREVO_API_KEY"  # Ganti ini di production!
+from django.conf import settings
 
 def kirim_email(to_email, subject, message_plain, message_html):
     url = "https://api.brevo.com/v3/smtp/email"
     headers = {
         "accept": "application/json",
-        "api-key": BREVO_API_KEY,
+        "api-key": settings.BREVO_API_KEY,
         "content-type": "application/json"
     }
     data = {
         "sender": {
-            "name": "Sistem Laporan",
-            "email": "mitra27042004@gmail.com"
+            "name": settings.BREVO_SENDER_NAME,
+            "email": settings.BREVO_SENDER_EMAIL
         },
         "to": [
             {"email": to_email}
