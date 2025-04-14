@@ -32,3 +32,11 @@ def logout_view(request):
 def profil(request):
     user = request.user
     return render(request, "profil.html", {"user": user})
+
+def is_admin(user):
+    return user.is_staff or user.is_superuser
+
+@login_required(login_url='login')
+@user_passes_test(is_admin, login_url='dashboard')
+def profil_admin(request):
+    return render(request, 'profil_admin.html', {'user': request.user})
