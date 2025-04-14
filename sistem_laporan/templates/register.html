@@ -60,7 +60,23 @@
     <div class="mb-3">
         <label for="confirm_password" class="form-label">Konfirmasi Password</label>
         <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Daftar</button>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert 
+                {% if message.tags == 'error' %}alert-danger
+                {% elif message.tags == 'success' %}alert-success
+                {% else %}alert-info{% endif %} " role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in messages %}{% endfor %}
+    {% endif %}
+</form>
+<p class="text-center mt-3">Sudah punya akun? <a href="{% url 'login' %}">Login</a></p>
+</div>
 
-
-
-    
+<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
