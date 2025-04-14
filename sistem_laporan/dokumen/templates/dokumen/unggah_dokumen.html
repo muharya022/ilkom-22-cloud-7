@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unggah Surat Tugas</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    
+</head>
+<body>
+    <div class="container mt-5">
+
+        
+
+        <h3>Unggah Surat Tugas</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Nomor Surat</label>
+                <input type="text" class="form-control" name="nomor_surat" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tanggal Surat</label>
+                <input type="date" class="form-control" name="tanggal_surat" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">IRBAN</label>
+                <select class="form-select" name="irban" required>
+                    <option value="">Pilih IRBAN</option>
+                    <option value="IRBAN 1">IRBAN 1</option>
+                    <option value="IRBAN 2">IRBAN 2</option>
+                    <option value="IRBAN 3">IRBAN 3</option>
+                    <option value="IRBAN 4">IRBAN 4</option>
+                    <option value="IRBAN INVESTIGASI">IRBAN INVESTIGASI</option>
+                </select>                
+            </div>
+            
+            <h5>Tim Audit</h5>
+            <div id="tim-audit-container"></div>
+            <button type="button" class="btn btn-success mb-3" onclick="tambahAnggota()">Tambah Anggota</button>
+
+            <div class="mb-3">
+                <label class="form-label">Uraian</label>
+                <textarea class="form-control" name="uraian" rows="3" placeholder="Masukkan uraian tugas"></textarea>
+            </div>
+
+                        <div class="mb-3">
+                <label class="form-label">Unggah Surat Tugas (PDF)</label>
+                <input type="file" class="form-control" name="file" accept=".pdf" required onchange="cekFile(this)">
+            </div>
+
+            <input type="hidden" name="tim_audit" id="tim_audit_input">
+            
+            <div class="d-flex gap-2 mb-5">
+                <button type="submit" class="btn btn-primary">Unggah</button>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Kembali</a>
+            </div>
+
+
+            
+        </form>
+    </div>
+    
+
+<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
