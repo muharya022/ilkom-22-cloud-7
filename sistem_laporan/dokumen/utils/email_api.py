@@ -13,7 +13,7 @@ def kirim_email(to_email, subject, message_plain, message_html):
     data = {
         "sender": {
             "name": "Sistem Laporan",
-            "email": "mitra2704@gmail.com"
+            "email": "mitra27042004@gmail.com"
         },
         "to": [
             {"email": to_email}
