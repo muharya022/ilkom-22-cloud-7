@@ -20,3 +20,9 @@ class Dokumen(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     laporan_diunggah = models.BooleanField(default=False)
     tanggal_surat = models.DateField()
+    @property
+    def batas_waktu(self):
+        return self.tanggal_surat + timedelta(days=14)
+    
+    def __str__(self):
+        return f"{self.nomor_surat} - {self.irban}"
