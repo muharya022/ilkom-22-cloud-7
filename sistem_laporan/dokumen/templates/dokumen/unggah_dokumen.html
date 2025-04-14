@@ -6,6 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unggah Surat Tugas</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script>
+        function tambahAnggota() {
+            let container = document.getElementById("tim-audit-container");
+            let row = document.createElement("div");
+            row.classList.add("row", "mb-2");
+            row.innerHTML = `
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="nama_tim[]" placeholder="Nama" required>
+                </div>
+                <div class="col-md-5">
+                    <select class="form-select" name="jabatan_tim[]" required>
+                        <option value="">Pilih Jabatan</option>
+                        <option value="PENANGGUNG JAWAB">PENANGGUNG JAWAB</option>
+                        <option value="PEMBANTU PENANGGUNG JAWAB">PEMBANTU PENANGGUNG JAWAB</option>
+                        <option value="PENGENDALI MUTU">PENGENDALI MUTU</option>
+                        <option value="PENGENDALI TEKNIS">PENGENDALI TEKNIS</option>
+                        <option value="KETUA TIM">KETUA TIM</option>
+                        <option value="ANGGOTA">ANGGOTA</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">Hapus</button>
+                </div>
+            `;
+            container.appendChild(row);
+        }
+
+        function cekFile(input) {
+            let file = input.files[0];
+            if (file) {
+                let ext = file.name.split('.').pop().toLowerCase();
+                if (ext !== 'pdf') {
+                    alert("Hanya file PDF yang diperbolehkan!");
+                    input.value = "";
+                }
+            }
+        }
+    </script>
     
 </head>
 <body>
