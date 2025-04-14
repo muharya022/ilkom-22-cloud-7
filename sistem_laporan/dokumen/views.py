@@ -257,3 +257,36 @@ def hapus_dokumen(request, dokumen_id):
 
 from django.shortcuts import render
 from .models import Dokumen
+
+def daftar_dokumen(request):
+    today = now().date()
+    nomor_surat_query = request.GET.get("nomor_surat", "")
+    tahun_choices = Dokumen.objects.values_list('tanggal_surat__year', flat=True).distinct()
+    irban_choices = Dokumen.objects.values_list('irban', flat=True).distinct()
+
+    tahun = request.GET.get('tahun')
+    irban = request.GET.get('irban')
+
+    dokumen_list = Dokumen.objects.filter(user=request.user)
+
+    # Filter berdasarkan tahun dan irban jika ada
+    if nomor_surat_query:
+        dokumen_list = dokumen_list.filter(nomor_surat__icontains=nomor_surat_query)
+    if tahun:
+        dokumen_list = dokumen_list.filter(tanggal_surat__year=tahun)
+    if irban:
+        dokumen_list = dokumen_list.filter(irban=irban)
+
+    dokumen_list = dokumen_list.order_by("-tanggal_surat", "-id")
+
+    # Periksa output SQL yang dihasilkan
+    print(dokumen_list.query)
+
+    context = {
+        'dokumen_list': dokumen_list,
+        'tahun_choices': tahun_choices,
+        'irban_choices': irban_choices,
+        'today': today,
+    }
+    
+    return render(request, 'dokumen/daftar_dokumen.html', context)
