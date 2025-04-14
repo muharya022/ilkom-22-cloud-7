@@ -363,3 +363,26 @@ def ekspor_excel(request):
             tanggal_masuk_surat,
         ]
         ws.append(row_data)
+        
+         # Terapkan border, format alignment (rata tengah), dan wrap text
+        for col_num in range(1, len(headers) + 1):
+            cell = ws.cell(row=row_num, column=col_num)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        
+        # Khusus untuk kolom "Tim Audit", teks tetap wrap text dengan posisi di atas
+        ws.cell(row=row_num, column=4).alignment = Alignment(horizontal="center", vertical="top", wrap_text=True)
+
+        row_num += 1  # Pindah ke baris berikutnya
+
+    # *Menyesuaikan lebar kolom secara otomatis agar data panjang tidak terpotong*
+    for col_num, col_name in enumerate(headers, 1):
+        max_length = max(len(str(ws.cell(row=row, column=col_num).value)) for row in range(1, row_num + 1))
+        ws.column_dimensions[openpyxl.utils.get_column_letter(col_num)].width = max(15, min(max_length + 5, 50))
+
+    # Menyusun response untuk mendownload file Excel
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=daftar_dokumen.xlsx'
+    wb.save(response)
+
+    return response
