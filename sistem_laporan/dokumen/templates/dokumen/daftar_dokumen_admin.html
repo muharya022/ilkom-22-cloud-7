@@ -114,3 +114,26 @@
                
             </tbody>
         </table>
+
+        <div class="d-flex justify-content-center mt-3">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    {% if dokumen.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ dokumen.previous_page_number }}">Previous</a></li>
+                    {% endif %}
+                    
+                    <li class="page-item disabled"><a class="page-link">Page {{ dokumen.number }} of {{ dokumen.paginator.num_pages }}</a></li>
+    
+                    {% if dokumen.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ dokumen.next_page_number }}">Next</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ dokumen.paginator.num_pages }}">Last &raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary mt-2 mb-5 ">Kembali</a>
+    </div>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
