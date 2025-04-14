@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unggah Laporan</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script>
+        function cekFile(input) {
+            let file = input.files[0];
+            if (file) {
+                let ext = file.name.split('.').pop().toLowerCase();
+                if (ext !== 'pdf') {
+                    alert("Hanya file PDF yang diperbolehkan!");
+                    input.value = "";
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <h3>Unggah Laporan</h3>
+        <p class="mb-3 mt-3"><strong>Note :</strong> saat memasuki halaman upload laporan wajib di isi! jika terjadi kesalahan, silakan update kembali</p>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label">Judul Laporan</label>
+                <input type="text" class="form-control" name="judul_laporan" placeholder="Masukkan judul laporan" required>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Tanggal Laporan</label>
+                <input type="date" class="form-control" name="tanggal_laporan" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Nomor Laporan</label>
+                <input type="text" class="form-control" name="nomor_laporan" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tanggal Masuk Laporan</label>
+                <input type="date" class="form-control" name="tanggal_masuk_surat" required>
+            </div> 
+
+            <div class="mb-3">
+                <label class="form-label">Unggah Laporan (PDF)</label>
+                <input type="file" class="form-control" name="file" accept=".pdf" required onchange="cekFile(this)">
+            </div>
+            
+            <div class="d-flex gap-2 mb-5">
+                <button type="submit" class="btn btn-primary">Unggah</button>
+            </div>
+        </form>
+    </div>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
