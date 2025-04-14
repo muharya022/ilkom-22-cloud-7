@@ -125,3 +125,12 @@ def login_view(request):
             messages.error(request, "Username atau password salah!")
 
     return render(request, 'login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+@login_required(login_url='login')
+def profil(request):
+    user = request.user
+    return render(request, 'profil.html', {'user': user})
