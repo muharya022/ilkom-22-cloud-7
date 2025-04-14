@@ -49,7 +49,13 @@
 <body>
     <div class="container mt-5">
 
-        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
 
         <h3>Unggah Surat Tugas</h3>
         <form method="POST" enctype="multipart/form-data">
@@ -95,12 +101,22 @@
                 <button type="submit" class="btn btn-primary">Unggah</button>
                 <a href="{% url 'dashboard' %}" class="btn btn-secondary">Kembali</a>
             </div>
-
-
             
         </form>
     </div>
-    
+    <!-- Input Hidden untuk Tim Audit -->
+<input type="hidden" id="tim_audit_input" name="tim_audit">
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("dokumenForm").addEventListener("submit", function(event) {
+            let timAudit = [
+                { nama: "Ahmad", jabatan: "Ketua" },
+                { nama: "Budi", jabatan: "Anggota" }
+            ];
+            document.getElementById("tim_audit_input").value = JSON.stringify(timAudit);
+        });
+    });
+    </script>
 
 <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
