@@ -69,3 +69,14 @@ def register_view(request):
             messages.error(request, "Password tidak cocok.")
 
     return render(request, 'register.html')
+
+
+@login_required
+def profil(request):
+    user = request.user
+    return render(request, 'profil.html', {'user': user, 'full_name': user.get_full_name()})
+
+@login_required(login_url='login')
+def dashboard(request):
+    dokumen_belum_diunggah = Dokumen.objects.filter(laporan_diunggah=False)
+    return render(request, 'dashboard.html', {"dokumen_belum_diunggah": dokumen_belum_diunggah})
