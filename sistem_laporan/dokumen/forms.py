@@ -39,3 +39,12 @@ class LaporanForm(forms.ModelForm):
         """Pastikan dokumen terhubung dengan laporan"""
         self.dokumen_instance = kwargs.pop('dokumen', None)
         super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        """Gabungkan data laporan dengan dokumen sebelum menyimpan."""
+        laporan = super().save(commit=False)
+        if self.dokumen_instance:
+            laporan.dokumen = self.dokumen_instance
+        if commit:
+            laporan.save()
+        return laporan
