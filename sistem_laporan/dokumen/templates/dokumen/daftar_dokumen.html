@@ -46,6 +46,8 @@
             </div>
         </form>
 
+        <!-- Tombol Ekspor Excel -->
+        <a href="{% url 'ekspor_excel' %}?tahun={{ request.GET.tahun }}&irban={{ request.GET.irban }}" class="btn btn-success mb-4">Ekspor ke Excel</a>
 
         <a href="{% url 'dashboard' %}" class="btn btn-secondary mt-2 mb-5">Kembali</a>
     </div>
