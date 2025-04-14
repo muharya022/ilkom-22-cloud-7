@@ -80,3 +80,19 @@ def profil(request):
 def dashboard(request):
     dokumen_belum_diunggah = Dokumen.objects.filter(laporan_diunggah=False)
     return render(request, 'dashboard.html', {"dokumen_belum_diunggah": dokumen_belum_diunggah})
+
+
+@login_required(login_url='login')
+@user_passes_test(is_admin, login_url='dashboard')
+def admin_dashboard(request):
+    dokumen_belum_diunggah = Dokumen.objects.filter(laporan_diunggah=False)
+    print(f"Jumlah dokumen yang belum diunggah: {dokumen_belum_diunggah.count()}")  # Tambahkan baris ini untuk debugging
+    if not request.user.is_staff:
+        return redirect('dashboard') 
+
+    users_list = User.objects.all().order_by('-is_staff') 
+    paginator = Paginator(users_list, 10)
+
+    page_number = request.GET.get('page')
+    users = paginator.get_page(page_number)
+    return render(request, 'admin_dashboard.html', {'users': users, 'dokumen_belum_diunggah': dokumen_belum_diunggah})
