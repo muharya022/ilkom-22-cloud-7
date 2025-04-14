@@ -26,3 +26,15 @@ class Dokumen(models.Model):
     
     def __str__(self):
         return f"{self.nomor_surat} - {self.irban}"
+    
+
+class Laporan(models.Model):
+    dokumen = models.OneToOneField(Dokumen, on_delete=models.CASCADE, related_name="laporan")
+    judul_laporan = models.CharField(max_length=255)
+    tanggal_laporan = models.DateField(default=now)
+    nomor_laporan = models.CharField(max_length=100)
+    tanggal_masuk_surat = models.DateField(null=True, blank=True)
+    file = models.FileField(upload_to="laporan/")
+
+    def __str__(self):
+        return self.judul_laporan
