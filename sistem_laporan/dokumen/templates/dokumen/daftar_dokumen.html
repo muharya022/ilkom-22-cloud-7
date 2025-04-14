@@ -49,6 +49,92 @@
         <!-- Tombol Ekspor Excel -->
         <a href="{% url 'ekspor_excel' %}?tahun={{ request.GET.tahun }}&irban={{ request.GET.irban }}" class="btn btn-success mb-4">Ekspor ke Excel</a>
 
+        <!-- Tabel Daftar Dokumen -->
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark text-center align-middle">
+                <tr>
+                    <th>No Surat</th>
+
+                    <th>Tanggal Surat</th>
+
+                    <th>Irban</th>
+
+                    <th>Tim Audit</th>
+
+                    <th>Laporan</th>
+
+                    <th>Batas Unggah Laporan</th>
+
+                    <th>Unduh</th>
+                    
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                {% for dokumen in dokumen_list %}
+                <tr>
+                    <td>{{ dokumen.nomor_surat }}</td>
+                    <td>{{ dokumen.tanggal_surat|date:"d-m-Y" }}</td>
+                    <td>{{ dokumen.irban }}</td>
+                    <td>
+                        {% if dokumen.tim_audit %}
+                            <ul>
+                                {% for anggota in dokumen.tim_audit %}
+                                    <li>{{ anggota.nama }} - {{ anggota.jabatan }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span class="text-muted">Tidak ada Tim Audit</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if dokumen.laporan and dokumen.laporan.file %}
+                            <span class="badge bg-success">Sudah diunggah</span>
+                        {% else %}
+                            <span class="badge bg-danger">Belum diunggah</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if dokumen.laporan %}
+                            {% if dokumen.batas_waktu < today %}
+                                <span class="badge bg-danger">Terlambat</span>
+                                <br>
+                                {{ dokumen.laporan.tanggal_laporan|date:"d-m-Y" }}
+                            {% else %}
+                                <span class="badge bg-success">Tepat Waktu</span>
+                                <br>
+                                {{ dokumen.laporan.tanggal_laporan|date:"d-m-Y" }}
+                            {% endif %}
+                        {% else %}
+                            <span class="badge bg-warning">Belum Diunggah</span>
+                            <br>
+                            {{ dokumen.batas_waktu|date:"d-m-Y" }}
+                        {% endif %}
+                    </td>                                                                        
+                    <td>
+                        {% if dokumen.file %}
+                            <a href="{% url 'unduh_surat_tugas' dokumen.id %}" class="btn btn-sm btn-info text-white">Surat Tugas</a>
+                        {% endif %}
+                        {% if dokumen.laporan and dokumen.laporan.file %}
+                            <a href="{% url 'unduh_laporan' dokumen.laporan.id %}" class="btn btn-sm btn-success">Laporan</a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'detail_dokumen' dokumen.id %}" class="btn btn-sm btn-primary">Detail</a>
+                        {% if not dokumen.nomor_laporan %}
+                            <a href="{% url 'unggah_laporan' dokumen.id %}" class="btn btn-sm btn-warning text-white">Update</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">Belum ada surat tugas</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
         <a href="{% url 'dashboard' %}" class="btn btn-secondary mt-2 mb-5">Kembali</a>
     </div>
 
