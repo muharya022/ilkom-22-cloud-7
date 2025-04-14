@@ -7,6 +7,7 @@ from .views import (
     register_view,
     dashboard,
     admin_dashboard,
+    profil_inspektorat,
 )
 from . import views
 from django.conf import settings
@@ -22,4 +23,5 @@ urlpatterns = [
     path("profil/", profil, name="profil"),
     path("profil_admin/", views.profil_admin, name="profil_admin"),
     path("dokumen/", include("dokumen.urls")),
+    path('profil/', views.profil_inspektorat, name='profil_inspektorat'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
