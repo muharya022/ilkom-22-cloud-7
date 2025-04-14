@@ -117,6 +117,58 @@
         });
     });
     </script>
+    
+<script>
+    function tambahAnggota() {
+        let container = document.getElementById("tim-audit-container");
+        let row = document.createElement("div");
+        row.classList.add("row", "mb-2");
+        row.innerHTML = `
+            <div class="col-md-5">
+                <input type="text" class="form-control nama_tim" placeholder="Nama" required>
+            </div>
+            <div class="col-md-5">
+                <select class="form-select jabatan_tim" required>
+                    <option value="">Pilih Jabatan</option>
+                    <option value="PENANGGUNG JAWAB">PENANGGUNG JAWAB</option>
+                    <option value="PEMBANTU PENANGGUNG JAWAB">PEMBANTU PENANGGUNG JAWAB</option>
+                    <option value="PENGENDALI MUTU">PENGENDALI MUTU</option>
+                    <option value="PENGENDALI TEKNIS">PENGENDALI TEKNIS</option>
+                    <option value="KETUA TIM">KETUA TIM</option>
+                    <option value="ANGGOTA">ANGGOTA</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-danger" onclick="hapusAnggota(this)">Hapus</button>
+            </div>
+        `;
+        container.appendChild(row);
+    }
+
+    function hapusAnggota(button) {
+        button.parentElement.parentElement.remove();
+        updateTimAudit();
+    }
+
+    function updateTimAudit() {
+        let timAuditData = [];
+        let namaTimElements = document.querySelectorAll(".nama_tim");
+        let jabatanTimElements = document.querySelectorAll(".jabatan_tim");
+
+        for (let i = 0; i < namaTimElements.length; i++) {
+            let nama = namaTimElements[i].value.trim();
+            let jabatan = jabatanTimElements[i].value.trim();
+
+            if (nama !== "" && jabatan !== "") {
+                timAuditData.push({ nama: nama, jabatan: jabatan });
+            }
+        }
+
+        document.getElementById("tim_audit_input").value = JSON.stringify(timAuditData);
+    }
+
+    document.addEventListener("input", updateTimAudit);
+</script>
 
 <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
