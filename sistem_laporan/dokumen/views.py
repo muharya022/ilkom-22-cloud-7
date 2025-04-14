@@ -40,7 +40,7 @@ from django.db import IntegrityError
 import json
 
 # Import fungsi kirim_email
-from .utils import email_api
+from dokumen.utils import email_api
 
 @login_required(login_url='login')
 def unggah_dokumen(request):
