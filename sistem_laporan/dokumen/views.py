@@ -290,3 +290,19 @@ def daftar_dokumen(request):
     }
     
     return render(request, 'dokumen/daftar_dokumen.html', context)
+
+import openpyxl
+from openpyxl.styles import Font, Border, Side, Alignment
+from django.http import HttpResponse
+from .models import Dokumen
+
+def ekspor_excel(request):
+    # Ambil data sesuai filter yang dipilih
+    tahun = request.GET.get('tahun')
+    irban = request.GET.get('irban')
+
+    dokumen_list = Dokumen.objects.filter(user=request.user)
+    if tahun:
+        dokumen_list = dokumen_list.filter(tanggal_surat__year=tahun)
+    if irban:
+        dokumen_list = dokumen_list.filter(irban=irban)
