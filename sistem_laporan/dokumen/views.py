@@ -310,3 +310,28 @@ def ekspor_excel(request):
         dokumen_list = dokumen_list.filter(tanggal_surat__year=tahun)
     if irban:
         dokumen_list = dokumen_list.filter(irban=irban)
+
+    # Membuat workbook baru
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Daftar Dokumen"
+
+    # Gaya Border (garis tabel)
+    thin_border = Border(left=Side(style='thin'), right=Side(style='thin'),
+                         top=Side(style='thin'), bottom=Side(style='thin'))
+
+    # Header kolom
+    headers = [
+        'Nomor Surat', 'Tanggal Surat', 'Irban', 'Tim Audit (Nama & Jabatan)', 
+        'Uraian', 'Nomor Laporan', 'Tanggal Laporan', 'Tanggal Masuk Laporan'
+    ]
+    ws.append(headers)
+
+    # Gaya header (Bold + Center + Border)
+    for col_num, col_name in enumerate(headers, 1):
+        cell = ws.cell(row=1, column=col_num, value=col_name)
+        cell.font = Font(bold=True)
+        cell.alignment = Alignment(horizontal="center", vertical="center")
+        cell.border = thin_border
+
+    row_num = 2  # Mulai dari baris kedua (baris pertama adalah header)
