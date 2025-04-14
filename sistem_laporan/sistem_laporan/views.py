@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 
 
@@ -37,6 +37,7 @@ def is_admin(user):
     return user.is_staff or user.is_superuser
 
 @login_required(login_url='login')
+
 @user_passes_test(is_admin, login_url='dashboard')
 def profil_admin(request):
     return render(request, 'profil_admin.html', {'user': request.user})
@@ -96,3 +97,7 @@ def admin_dashboard(request):
     page_number = request.GET.get('page')
     users = paginator.get_page(page_number)
     return render(request, 'admin_dashboard.html', {'users': users, 'dokumen_belum_diunggah': dokumen_belum_diunggah})
+
+
+def profil_inspektorat(request):
+    return render(request, 'profile.html')
