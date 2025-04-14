@@ -165,3 +165,31 @@ def hapus_pengguna(request, user_id):
     user.delete()
     messages.success(request, "Pengguna berhasil dihapus.")
     return redirect('admin_dashboard')
+
+
+@login_required(login_url='login')
+@user_passes_test(is_admin, login_url='dashboard')
+def create_user(request):
+    if request.method == "POST":
+        full_name = request.POST['full_name']
+        first_name, last_name = full_name.split(' ', 1) if ' ' in full_name else (full_name, '')
+
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        is_staff = request.POST.get('is_staff', False) == "on" 
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username sudah digunakan.")
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, "Email sudah digunakan.")
+        else:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.is_staff = is_staff
+            user.save()
+            messages.success(request, "Akun berhasil dibuat!")
+            return redirect('admin_dashboard')
+
+    return render(request, 'dokumen/create_user.html')
