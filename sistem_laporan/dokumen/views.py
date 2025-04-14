@@ -64,6 +64,7 @@ def unggah_dokumen(request):
 
     return render(request, "dokumen/unggah_dokumen.html", {"form": form,})
 
+
 @login_required
 def detail_dokumen(request, dokumen_id):
     dokumen = get_object_or_404(Dokumen, pk=dokumen_id)
@@ -101,6 +102,7 @@ def unduh_laporan(request, laporan_id):
 
     return FileResponse(laporan.file.open("rb"), as_attachment=True)
 
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -135,6 +137,7 @@ def profil(request):
     user = request.user
     return render(request, 'profil.html', {'user': user})
 
+
 def register_view(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -156,6 +159,7 @@ def register_view(request):
 
     return render(request, 'register.html')
 
+
 def is_admin(user):
     return user.is_superuser or user.is_staff
 
@@ -165,7 +169,6 @@ def hapus_pengguna(request, user_id):
     user.delete()
     messages.success(request, "Pengguna berhasil dihapus.")
     return redirect('admin_dashboard')
-
 
 @login_required(login_url='login')
 @user_passes_test(is_admin, login_url='dashboard')
@@ -217,6 +220,7 @@ def update_user(request, user_id):
         return redirect('admin_dashboard')
 
     return render(request, 'dokumen/update_user.html', {'user': user})
+
 
 @user_passes_test(is_admin)
 def daftar_dokumen_admin(request):
