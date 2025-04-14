@@ -134,6 +134,23 @@
             </tbody>
         </table>
 
+        <!-- Pagination -->
+        <nav class="d-flex justify-content-center mt-3">
+            <ul class="pagination">
+                {% if dokumen_list.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">Awal</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ dokumen_list.previous_page_number }}">Sebelumnya</a></li>
+                {% endif %}
+
+                <li class="page-item disabled"><a class="page-link">Halaman {{ dokumen_list.number }} dari {{ dokumen_list.paginator.num_pages }}</a></li>
+
+                {% if dokumen_list.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ dokumen_list.next_page_number }}">Berikutnya</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ dokumen_list.paginator.num_pages }}">Akhir</a></li>
+                {% endif %}
+            </ul>
+        </nav>    
+
 
         <a href="{% url 'dashboard' %}" class="btn btn-secondary mt-2 mb-5">Kembali</a>
     </div>
