@@ -386,3 +386,6 @@ def ekspor_excel(request):
     wb.save(response)
 
     return response
+
+def profil_inspektorat(request):
+    return render(request, 'profile.html')
