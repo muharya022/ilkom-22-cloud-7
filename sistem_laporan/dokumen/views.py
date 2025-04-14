@@ -100,3 +100,28 @@ def unduh_laporan(request, laporan_id):
         return redirect("daftar_dokumen")
 
     return FileResponse(laporan.file.open("rb"), as_attachment=True)
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
+from .models import Dokumen 
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            if user.is_superuser or user.is_staff:
+                return redirect('admin_dashboard')
+            else:
+                return redirect('dashboard')
+        else:
+            messages.error(request, "Username atau password salah!")
+
+    return render(request, 'login.html')
