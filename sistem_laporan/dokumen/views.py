@@ -33,6 +33,14 @@ def unggah_laporan(request, dokumen_id):
 
     return render(request, "dokumen/unggah_laporan.html", {"form": form, "dokumen": dokumen})
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.db import IntegrityError
+import json
+
+# Import fungsi kirim_email
+from .utils import email_api
 
 @login_required(login_url='login')
 def unggah_dokumen(request):
@@ -40,8 +48,8 @@ def unggah_dokumen(request):
         form = DokumenForm(request.POST, request.FILES)
         if form.is_valid():
             try:
-                dokumen = form.save(commit=False) 
-                dokumen.user = request.user  
+                dokumen = form.save(commit=False)
+                dokumen.user = request.user
                 dokumen.save()
 
                 tim_audit_data = request.POST.get("tim_audit")
@@ -51,9 +59,28 @@ def unggah_dokumen(request):
                     except json.JSONDecodeError:
                         dokumen.tim_audit = []
                     dokumen.save()
-                
-                messages.success(request, "Surat Tugas berhasil diunggah.")
+
+                # ✅ Kirim notifikasi email
+                to_email = request.user.email
+                subject = "Notifikasi: Surat Tugas Berhasil Diunggah"
+                message_plain = f"Surat tugas dengan nomor {dokumen.nomor_surat} telah berhasil diunggah."
+                message_html = f"""
+                    <html>
+                        <body>
+                            <h3>Notifikasi Unggah Dokumen</h3>
+                            <p>Surat tugas dengan nomor <strong>{dokumen.nomor_surat}</strong> telah berhasil diunggah.</p>
+                            <p>Silakan cek dashboard Anda untuk informasi lebih lanjut.</p>
+                            <br>
+                            <small>Email ini dikirim otomatis oleh Sistem Laporan.</small>
+                        </body>
+                    </html>
+                """
+
+                email_api(to_email, subject, message_plain, message_html)
+
+                messages.success(request, "Surat Tugas berhasil diunggah dan notifikasi telah dikirim.")
                 return redirect("daftar_dokumen")
+
             except IntegrityError:
                 messages.error(request, "Nomor surat sudah digunakan. Gunakan nomor yang berbeda.")
         else:
@@ -62,8 +89,7 @@ def unggah_dokumen(request):
     else:
         form = DokumenForm()
 
-    return render(request, "dokumen/unggah_dokumen.html", {"form": form,})
-
+    return render(request, "dokumen/unggah_dokumen.html", {"form": form})
 
 @login_required
 def detail_dokumen(request, dokumen_id):
