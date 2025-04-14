@@ -29,3 +29,13 @@ class DokumenForm(forms.ModelForm):
             return []
         except json.JSONDecodeError:
             raise forms.ValidationError("Format data tim audit tidak valid.")
+
+class LaporanForm(forms.ModelForm):
+    class Meta:
+        model = Laporan
+        fields = ['judul_laporan', 'tanggal_laporan', 'nomor_laporan', 'tanggal_masuk_surat', 'file']
+
+    def __init__(self, *args, **kwargs):
+        """Pastikan dokumen terhubung dengan laporan"""
+        self.dokumen_instance = kwargs.pop('dokumen', None)
+        super().__init__(*args, **kwargs)
