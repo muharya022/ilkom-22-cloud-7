@@ -247,3 +247,13 @@ def daftar_dokumen_admin(request):
         dokumen_page = paginator.page(1)
 
     return render(request, 'dokumen/daftar_dokumen_admin.html', {'dokumen_list': dokumen_list})
+
+@user_passes_test(is_admin)
+def hapus_dokumen(request, dokumen_id):
+    dokumen = get_object_or_404(Dokumen, id=dokumen_id)
+    dokumen.delete()
+    messages.success(request, "Dokumen berhasil dihapus.")
+    return redirect('admin_daftar_dokumen')
+
+from django.shortcuts import render
+from .models import Dokumen
