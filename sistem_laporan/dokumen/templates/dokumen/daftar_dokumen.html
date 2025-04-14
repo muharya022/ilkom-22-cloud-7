@@ -18,7 +18,34 @@
         {% endif %}
         <h2 class="mb-4 text-center">Daftar Surat Tugas</h2>
 
-        
+        <!-- Formulir Pencarian -->
+        <form method="GET" class="mb-3">
+            <div class="row g-2">
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="nomor_surat" placeholder="Nomor Surat" value="{{ request.GET.nomor_surat }}">
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" name="tahun">
+                        <option value="">Pilih Tahun</option>
+                        {% for tahun in tahun_choices %}
+                            <option value="{{ tahun }}" {% if request.GET.tahun == tahun %}selected{% endif %}>{{ tahun }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" name="irban">
+                        <option value="">Pilih Irban</option>
+                        {% for irban in irban_choices %}
+                            <option value="{{ irban }}" {% if request.GET.irban == irban %}selected{% endif %}>{{ irban }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary w-100">Cari</button>
+                </div>
+            </div>
+        </form>
+
 
         <a href="{% url 'dashboard' %}" class="btn btn-secondary mt-2 mb-5">Kembali</a>
     </div>
