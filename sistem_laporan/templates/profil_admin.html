@@ -38,5 +38,23 @@
                         </li>
                         <li class="nav-item me-4">
                             <a class="nav-link" href="{% url 'profil_admin' %}"><i class="bi bi-person-circle"></i> Profil</a>
+                        </li>
+                        <li class="nav-item me-4">
+                            <a class="nav-link" href="{% url 'admin_daftar_dokumen' %}"><i class="bi bi-person-circle"></i> Dokumen</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" href="{% url 'logout' %}" onclick="confirmLogout(event)">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    <div class="container mt-5">
+        <h2 class="mb-4">Profil Admin</h2>
+
+
+
 
 
