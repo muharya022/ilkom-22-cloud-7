@@ -1,44 +1,47 @@
 import requests
 from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 def kirim_email(to_email, subject, message_plain, message_html):
-    # Endpoint Brevo API
-    url = "https://api.brevo.com/v3/smtp/email"
+    # Pastikan konfigurasi tidak kosong
+    api_key = getattr(settings, "BREVO_API_KEY", None)
+    sender_name = getattr(settings, "BREVO_SENDER_NAME", "Sistem Laporan")
+    sender_email = getattr(settings, "BREVO_SENDER_EMAIL", None)
 
-    # Header dengan API key dari settings
+    if not api_key or not sender_email:
+        logger.error("API Key atau Email Pengirim belum dikonfigurasi di settings.py")
+        return None, "Konfigurasi email belum lengkap."
+
+    url = "https://api.brevo.com/v3/smtp/email"
     headers = {
         "accept": "application/json",
-        "api-key": settings.BREVO_API_KEY,
+        "api-key": api_key,
         "content-type": "application/json"
     }
 
-    # Data email yang akan dikirim
     data = {
         "sender": {
-            "name": settings.BREVO_SENDER_NAME,
-            "email": settings.BREVO_SENDER_EMAIL
+            "name": sender_name,
+            "email": sender_email
         },
-        "to": [
-            {"email": to_email}
-        ],
+        "to": [{"email": to_email}],
         "subject": subject,
         "htmlContent": message_html,
         "textContent": message_plain
     }
 
     try:
-        # Kirim POST request ke Brevo API
         response = requests.post(url, json=data, headers=headers)
 
-        # Debug print hasil response
-        print("===== EMAIL DEBUG INFO =====")
-        print("Status Code:", response.status_code)
-        print("Response Headers:", response.headers)
-        print("Response Body:", response.text)
-        print("============================")
+        if response.status_code == 201:
+            logger.info(f"Email berhasil dikirim ke {to_email}")
+        else:
+            logger.warning(f"Gagal mengirim email. Status: {response.status_code}, Respon: {response.text}")
 
         return response.status_code, response.text
 
     except requests.exceptions.RequestException as e:
-        print("Terjadi kesalahan saat mengirim email:", str(e))
+        logger.error(f"Kesalahan saat koneksi ke Brevo: {e}")
         return None, str(e)
