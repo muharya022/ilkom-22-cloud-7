@@ -217,3 +217,33 @@ def update_user(request, user_id):
         return redirect('admin_dashboard')
 
     return render(request, 'dokumen/update_user.html', {'user': user})
+
+@user_passes_test(is_admin)
+def daftar_dokumen_admin(request):
+
+    nomor_surat_query = request.GET.get("nomor_surat", "")
+    tanggal_surat_query = request.GET.get("tanggal_surat", "")
+    irban_query = request.GET.get("irban", "")
+
+    # Filter pencarian
+    dokumen_list = Dokumen.objects.select_related("user", "laporan").all()
+    
+    if nomor_surat_query:
+        dokumen_list = dokumen_list.filter(nomor_surat__icontains=nomor_surat_query)
+    if tanggal_surat_query:
+        dokumen_list = dokumen_list.filter(tanggal_surat=tanggal_surat_query)
+    if irban_query:
+        dokumen_list = dokumen_list.filter(irban__icontains=irban_query)
+
+    dokumen_list = dokumen_list.order_by("-tanggal_surat", "-id")
+
+
+    paginator = Paginator(dokumen_list, 10)
+    page_number = request.GET.get("page")
+
+    try:
+        dokumen_page = paginator.page(page_number)
+    except (EmptyPage, PageNotAnInteger):
+        dokumen_page = paginator.page(1)
+
+    return render(request, 'dokumen/daftar_dokumen_admin.html', {'dokumen_list': dokumen_list})
