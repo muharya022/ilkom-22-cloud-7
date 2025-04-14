@@ -193,27 +193,3 @@ def create_user(request):
             return redirect('admin_dashboard')
 
     return render(request, 'dokumen/create_user.html')
-
-@login_required(login_url='login')
-@user_passes_test(is_admin, login_url='dashboard')
-def update_user(request, user_id):
-    user = User.objects.get(id=user_id)
-
-    if request.method == "POST":
-        full_name = request.POST['full_name']
-        first_name, last_name = full_name.split(' ', 1) if ' ' in full_name else (full_name, '')
-
-        user.username = request.POST['username']
-        user.email = request.POST['email']
-        user.first_name = first_name
-        user.last_name = last_name
-        user.is_staff = request.POST.get('is_staff', False) == "on"
-
-        if 'password' in request.POST and request.POST['password']:
-            user.set_password(request.POST['password'])
-
-        user.save()
-        messages.success(request, "Akun berhasil diperbarui!")
-        return redirect('admin_dashboard')
-
-    return render(request, 'dokumen/update_user.html', {'user': user})
