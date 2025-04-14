@@ -5,14 +5,14 @@ import logging
 logger = logging.getLogger(__name__)
 
 def kirim_email(to_email, subject, message_plain, message_html):
-    # Pastikan konfigurasi tidak kosong
-    api_key = getattr(settings, "BREVO_API_KEY", None)
-    sender_name = getattr(settings, "BREVO_SENDER_NAME", "Sistem Laporan")
-    sender_email = getattr(settings, "BREVO_SENDER_EMAIL", None)
+    # Ambil konfigurasi dari settings.py
+    api_key = getattr(settings, 'BREVO_API_KEY', None)
+    sender_email = getattr(settings, 'BREVO_SENDER_EMAIL', None)
+    sender_name = getattr(settings, 'BREVO_SENDER_NAME', 'Sistem Laporan')
 
     if not api_key or not sender_email:
-        logger.error("API Key atau Email Pengirim belum dikonfigurasi di settings.py")
-        return None, "Konfigurasi email belum lengkap."
+        logger.error("BREVO_API_KEY atau BREVO_SENDER_EMAIL belum diatur di settings.py")
+        return None, "Konfigurasi belum lengkap"
 
     url = "https://api.brevo.com/v3/smtp/email"
     headers = {
@@ -21,7 +21,7 @@ def kirim_email(to_email, subject, message_plain, message_html):
         "content-type": "application/json"
     }
 
-    data = {
+    payload = {
         "sender": {
             "name": sender_name,
             "email": sender_email
@@ -33,15 +33,21 @@ def kirim_email(to_email, subject, message_plain, message_html):
     }
 
     try:
-        response = requests.post(url, json=data, headers=headers)
+        response = requests.post(url, json=payload, headers=headers)
+
+        # Log respon dari Brevo
+        logger.info(f"Status Code: {response.status_code}")
+        logger.info(f"Response: {response.text}")
 
         if response.status_code == 201:
-            logger.info(f"Email berhasil dikirim ke {to_email}")
+            print("✅ Email berhasil dikirim ke", to_email)
         else:
-            logger.warning(f"Gagal mengirim email. Status: {response.status_code}, Respon: {response.text}")
+            print("⚠️ Gagal kirim email.")
+            print("Status:", response.status_code)
+            print("Response:", response.text)
 
         return response.status_code, response.text
 
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Kesalahan saat koneksi ke Brevo: {e}")
+    except Exception as e:
+        logger.error("❌ Gagal koneksi ke Brevo:", exc_info=e)
         return None, str(e)
