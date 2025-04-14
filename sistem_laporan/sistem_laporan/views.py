@@ -97,3 +97,7 @@ def admin_dashboard(request):
     page_number = request.GET.get('page')
     users = paginator.get_page(page_number)
     return render(request, 'admin_dashboard.html', {'users': users, 'dokumen_belum_diunggah': dokumen_belum_diunggah})
+
+
+def profil_inspektorat(request):
+    return render(request, 'profile.html')
