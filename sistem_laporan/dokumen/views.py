@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.http import FileResponse, Http404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Dokumen, Laporan
 from .forms import DokumenForm, LaporanForm
 from django.contrib.auth.decorators import login_required
@@ -61,3 +63,40 @@ def unggah_dokumen(request):
         form = DokumenForm()
 
     return render(request, "dokumen/unggah_dokumen.html", {"form": form,})
+
+@login_required
+def detail_dokumen(request, dokumen_id):
+    dokumen = get_object_or_404(Dokumen, pk=dokumen_id)
+    laporan = Laporan.objects.filter(dokumen=dokumen).first()
+
+    print("Tim Audit yang dikirim ke template:", dokumen.tim_audit)
+
+    next_page = request.GET.get("next", request.META.get("HTTP_REFERER", "/"))
+
+    return render(request, "dokumen/detail_dokumen.html", {
+        "dokumen": dokumen,
+        "laporan": laporan,
+        "next_page": next_page,
+    })
+
+@login_required
+def unduh_surat_tugas(request, dokumen_id):
+    
+    dokumen = get_object_or_404(Dokumen, id=dokumen_id)
+
+    if not dokumen.file or not dokumen.file.name:
+        messages.error(request, "File Surat Tugas tidak tersedia.")
+        return redirect("daftar_dokumen")
+
+    return FileResponse(dokumen.file.open("rb"), as_attachment=True)
+
+@login_required
+def unduh_laporan(request, laporan_id):
+    
+    laporan = get_object_or_404(Laporan, id=laporan_id)
+
+    if not laporan.file or not laporan.file.name:
+        messages.error(request, "File Laporan tidak tersedia.")
+        return redirect("daftar_dokumen")
+
+    return FileResponse(laporan.file.open("rb"), as_attachment=True)
