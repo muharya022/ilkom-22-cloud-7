@@ -26,4 +26,22 @@
     </style>
 </head>
 <body>
+    <div class="register-container">
+        <h3>Daftar Akun</h3>
+        
+        <!-- Menampilkan pesan error -->
+        {% if messages %}
+        <div class="alert alert-danger">
+            {% for message in messages %}
+                <p class="mb-0">{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
 
+        <form action="{% url 'register' %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="full_name" class="form-label">Nama Lengkap</label>
+                <input type="text" class="form-control" id="full_name" name="full_name" required>
+
+    
