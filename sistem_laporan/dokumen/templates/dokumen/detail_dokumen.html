@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Dokumen</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">Detail Dokumen</h2>
+        
+        <table class="table table-bordered">
+            <tr><th>Nomor Surat</th><td>{{ dokumen.nomor_surat }}</td></tr>
+            <tr><th>Tanggal Surat</th><td>{{ dokumen.tanggal_surat }}</td></tr>
+            <tr><th>Irban</th><td>{{ dokumen.irban }}</td></tr>
+            <tr>
+                <th>Tim Audit</th>
+                <td>
+                    {% if dokumen.tim_audit %}
+                        <ul>
+                            {% for anggota in dokumen.tim_audit %}
+                                <li>{{ anggota.nama }} - {{ anggota.jabatan }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <span class="text-muted">Tidak ada Tim Audit</span>
+                    {% endif %}
+                </td>
