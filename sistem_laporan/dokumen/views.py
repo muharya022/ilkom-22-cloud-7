@@ -335,3 +335,31 @@ def ekspor_excel(request):
         cell.border = thin_border
 
     row_num = 2  # Mulai dari baris kedua (baris pertama adalah header)
+
+    for dokumen in dokumen_list:
+        laporan = dokumen.laporan if hasattr(dokumen, 'laporan') else None
+
+        nomor_laporan = laporan.nomor_laporan if laporan else "-"
+        tanggal_laporan = laporan.tanggal_laporan.strftime('%d-%m-%Y') if laporan and laporan.tanggal_laporan else "-"
+        tanggal_masuk_surat = laporan.tanggal_masuk_surat.strftime('%d-%m-%Y') if laporan and laporan.tanggal_masuk_surat else "-"
+        tanggal_surat = dokumen.tanggal_surat.strftime('%d-%m-%Y') if dokumen.tanggal_surat else "-"
+
+        tim_audit_list = dokumen.tim_audit if dokumen.tim_audit else []
+        
+        # Jika ada anggota tim audit, gabungkan nama dan jabatan ke dalam satu sel (dengan format terurut ke bawah)
+        if tim_audit_list:
+            tim_audit_str = "\n".join([f"{item['nama']} - {item['jabatan']}" for item in tim_audit_list])
+        else:
+            tim_audit_str = "-"  # Jika tidak ada anggota tim audit
+
+        row_data = [
+            dokumen.nomor_surat,
+            tanggal_surat,
+            dokumen.irban,
+            tim_audit_str,  # Format anggota tim audit ke bawah
+            dokumen.uraian,
+            nomor_laporan,
+            tanggal_laporan,
+            tanggal_masuk_surat,
+        ]
+        ws.append(row_data)
