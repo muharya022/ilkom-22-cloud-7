@@ -23,5 +23,5 @@ urlpatterns = [
     path("profil/", profil, name="profil"),
     path("profil_admin/", views.profil_admin, name="profil_admin"),
     path("dokumen/", include("dokumen.urls")),
-    path('profil/', views.profil_inspektorat, name='profil_inspektorat'),
+    path('profile/', views.profil_inspektorat, name='profil_inspektorat'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
