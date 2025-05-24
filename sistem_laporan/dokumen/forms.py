@@ -25,7 +25,7 @@ class DokumenForm(forms.ModelForm):
         tim_audit_data = self.cleaned_data.get("tim_audit")
         try:
             if tim_audit_data:
-                return json.loads(tim_audit_data)
+                return tim_audit_data
             return []
         except json.JSONDecodeError:
             raise forms.ValidationError("Format data tim audit tidak valid.")
