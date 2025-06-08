@@ -40,7 +40,7 @@ from django.db import IntegrityError
 import json
 
 # Import fungsi kirim_email
-from dokumen.utils import email_api
+from .utils.email_api import kirim_email
 
 @login_required(login_url='login')
 def unggah_dokumen(request):
@@ -76,7 +76,7 @@ def unggah_dokumen(request):
                     </html>
                 """
 
-                email_api(to_email, subject, message_plain, message_html)
+                kirim_email(to_email, subject, message_plain, message_html)
 
                 messages.success(request, "Surat Tugas berhasil diunggah dan notifikasi telah dikirim.")
                 return redirect("daftar_dokumen")

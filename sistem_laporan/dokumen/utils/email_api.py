@@ -1,8 +1,8 @@
 import os
-from dotenv import load_dotenv
 import requests
+from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv()  # load environment variables dari .env
 
 BREVO_API_KEY = os.getenv("BREVO_API_KEY")
 
@@ -16,7 +16,7 @@ def kirim_email(to_email, subject, message_plain, message_html):
     data = {
         "sender": {
             "name": "Sistem Laporan",
-            "email": "mitra2704204@gmail.com"
+            "email": "muhammadaryaalfajar@gmail.com"
         },
         "to": [{"email": to_email}],
         "subject": subject,
