@@ -426,3 +426,6 @@ def kontak_view(request):
         pesan = request.POST.get('pesan')
         
       print(f"Pesan dari {nama} ({email}): {subjek} - {pesan}")
+      
+      return HttpResponse(f"Terima kasih {nama}, pesan Anda telah dikirim.")
+    return render(request, 'kontak.html')
