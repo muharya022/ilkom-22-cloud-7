@@ -19,5 +19,5 @@ urlpatterns = [
     path('admin/create-user/', create_user, name='create_user'),
     path('admin/update-user/<int:user_id>/', update_user, name='update_user'),
     path('admin/dokumen/', daftar_dokumen_admin, name='admin_daftar_dokumen'),
-
+    path('kontak/', views.kontak_view, name='kontak'),
 ]
