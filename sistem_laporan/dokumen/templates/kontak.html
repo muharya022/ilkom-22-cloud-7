@@ -1,41 +1,51 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kontak Kami</title>
-  
+  <style>
+    
+
+   
+
+   
+
+    
+
+   
+
+    
+
+   
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
 
-  <header>
-    <h1>Website Kami</h1>
-    <p>Silakan hubungi kami melalui formulir di bawah ini</p>
-  </header>
-
-  <div class="kontak-container">
-    <h2>Formulir Kontak</h2>
+  <div class="form-wrapper">
+    <h2>Hubungi Kami</h2>
     <form method="POST">
       {% csrf_token %}
-      <label for="nama">Nama Lengkap:</label>
+      <label for="nama">Nama Lengkap</label>
       <input type="text" id="nama" name="nama" required>
 
-      <label for="email">Alamat Email:</label>
+      <label for="email">Alamat Email</label>
       <input type="email" id="email" name="email" required>
 
-      <label for="subjek">Judul Pesan:</label>
+      <label for="subjek">Subjek</label>
       <input type="text" id="subjek" name="subjek" required>
 
-      <label for="pesan">Isi Pesan:</label>
-      <textarea id="pesan" name="pesan" rows="6" required></textarea>
+      <label for="pesan">Pesan Anda</label>
+      <textarea id="pesan" name="pesan" required></textarea>
 
       <button type="submit">Kirim Pesan</button>
     </form>
   </div>
-
-  <footer>
-    &copy; 2025 Website Anda. All rights reserved.
-  </footer>
 
 </body>
 </html>
