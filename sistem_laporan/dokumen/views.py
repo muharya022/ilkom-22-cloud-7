@@ -424,3 +424,5 @@ def kontak_view(request):
         email = request.POST.get('email')
         subjek = request.POST.get('subjek')
         pesan = request.POST.get('pesan')
+        
+      print(f"Pesan dari {nama} ({email}): {subjek} - {pesan}")
