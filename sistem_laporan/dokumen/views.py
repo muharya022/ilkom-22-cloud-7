@@ -416,3 +416,9 @@ def ekspor_excel(request):
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+ body { font-family: Arial, sans-serif; background-color: #f7f7f7; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    h2 { text-align: center; color: #333; }
+    label { display: block; margin: 15px 0 5px; }
+    input[type="text"], input[type="email"], textarea {
+      width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;
