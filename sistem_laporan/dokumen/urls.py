@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from .views import (
-    unggah_dokumen, daftar_dokumen, unggah_laporan, 
+    unggah_dokumen, daftar_dokumen, unggah_laporan, kontak_view, 
     detail_dokumen, unduh_laporan, unduh_surat_tugas, ekspor_excel, create_user, update_user,  daftar_dokumen_admin,
 )
 
@@ -19,5 +19,5 @@ urlpatterns = [
     path('admin/create-user/', create_user, name='create_user'),
     path('admin/update-user/<int:user_id>/', update_user, name='update_user'),
     path('admin/dokumen/', daftar_dokumen_admin, name='admin_daftar_dokumen'),
-    path('kontak/', views.kontak_view, name='kontak'),
+    path('kontak/', kontak_view, name='kontak'),
 ]
