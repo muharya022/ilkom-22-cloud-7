@@ -10,6 +10,7 @@
   <div class="form-card">
     <h2>Hubungi Kami</h2>
     <form method="POST">
+      {% csrf_token %}
       <input type="text" name="nama" placeholder="Nama Lengkap" required>
       <input type="email" name="email" placeholder="Email Aktif" required>
       <input type="text" name="subjek" placeholder="Subjek Pesan" required>
